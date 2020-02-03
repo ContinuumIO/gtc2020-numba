@@ -1,7 +1,3 @@
-# Based on Dockerfile originally provided by NVIDIA DLI
-# Build with:
-#     docker build -t conda_cuda_base_2019:latest .
-
 FROM nvcr.io/nvidia/tensorflow:18.05-py3
 
 
@@ -57,10 +53,21 @@ ENV PATH=$PATH:/home/appuser/Miniconda3/bin
 RUN conda install -y jupyter notebook
 
 # Install Numba and CUDA toolkit
-ARG NUMBA_VERSION=0.42
-ARG CONDA_CUDATOOLKIT=9.0
-RUN conda install -y -c numba cudatoolkit=$CONDA_CUDATOOLKIT numba=$NUMBA_VERSION
+ARG NUMBA_VERSION=0.48
+ARG CONDA_CUDATOOLKIT=10.0
+RUN conda install -y -c numba cudatoolkit=$CONDA_CUDATOOLKIT numba=$NUMBA_VERSION cupy
 # Latest CuPy not in Anaconda yet
-RUN /home/appuser/Miniconda3/bin/pip install cupy-cuda90
-################## TASK SPECIFIC ABOVE, CHANGE AS NEEDED ########################3
+#RUN /home/appuser/Miniconda3/bin/pip install cupy-cuda10
 
+RUN conda install -y scipy matplotlib pandas
+
+RUN git clone https://github.com/ContinuumIO/gtc2020-numba
+
+WORKDIR ./gtc2020-numba
+
+ARG BRANCH="master"
+RUN git fetch && git checkout $BRANCH
+
+CMD /home/appuser/Miniconda3/bin/jupyter notebook --port 9999 --ip 0.0.0.0
+
+################## TASK SPECIFIC ABOVE, CHANGE AS NEEDED ########################3

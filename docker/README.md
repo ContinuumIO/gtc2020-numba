@@ -1,23 +1,22 @@
 # Docker Instructions
 
-To build the images:
+To build the image:
 
 ```bash
-docker build -t conda_cuda_base_2019:latest ./base
-docker build -t numba_gtc2019:latest ./notebooks
+docker build -t gtc2019_numba:latest .
 ```
 
 The notebook image takes an optional build argument `BRANCH` to
 select the branch or commit to checkout
 
 ```
-docker build -t numba_gtc2019:latest --build-arg BRANCH=master ./notebooks
+docker build -t gtc2019_numba:latest --build-arg BRANCH=master .
 ```
 
 Run the notebook with:
 
 ```bash
-nvidia-docker run -p 9999:9999 -it numba_gtc2019:latest
+nvidia-docker run -p 9999:9999 -it gtc2019_numba:latest
 ```
 
 It will start the jupyter notebook automatically.
