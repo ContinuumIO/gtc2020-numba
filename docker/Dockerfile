@@ -39,15 +39,18 @@ RUN pip install --ignore-installed ipython jupyter
 ################## TASK SPECIFIC BELOW, CHANGE AS NEEDED ########################3
 # Install task specific stuff
 
+# FIXME: Workaround non-existent entrypoint above
+ENTRYPOINT
+
 # Add user
 RUN useradd -ms /bin/bash appuser
 USER appuser
 WORKDIR /home/appuser
 
 # Download and install miniconda
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-4.5.11-Linux-x86_64.sh
-RUN bash Miniconda3-4.5.11-Linux-x86_64.sh -b -p /home/appuser/Miniconda3
-ENV PATH=$PATH:/home/appuser/Miniconda3/bin
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-4.7.12.1-Linux-x86_64.sh
+RUN bash Miniconda3-4.7.12.1-Linux-x86_64.sh -b -p /home/appuser/Miniconda3
+ENV PATH=/home/appuser/Miniconda3/bin:$PATH
 
 # Install Jupyter Notebook
 RUN conda install -y jupyter notebook
